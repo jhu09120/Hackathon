@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>군 병원 찾기</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    li{
+        list-style: none;
+    }
+    .wrap{
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        background: #eee;
+    }
+    .contents{
+        width: 80vw;
+        height: 90vh;
+        background: #fff;
+        border-radius: 25px;
+        position: absolute; top:5vh; right:3vw;
+    }
+    .menubar{
+        width: 8vw;
+        height: 90vh;
+        background: #fff;
+        border-radius: 25px;
+        position: absolute; top:5vh; left:3vw;
+    }
+    .menubar h2{
+        text-align: center;
+        color:#2757FF;
+        font-size: 40px;
+        padding: 5px;
+        margin-top: 30px;
+    }
+    .menubar li{
+        text-align: center;
+        margin-top: 40px;
+        padding: 10px;
+    }
+    .menubar li:nth-child(1){
+       margin-top: 100px;
+    }
+    #map {
+       width: 75vw;
+       height: 80vh;
+       position: absolute; top: 5vh; left: 2.5vw;
+       border-radius: 25px;
+    }
+    .img{
+        width: 45px;
+    }
+    .sel_img{
+        width: 45px;
+        background: #4b71f9;
+        border-radius: 10px;
+    }
+</style>
+<body>
+    <div class="wrap">
+        <div class="menubar">
+            <h2>n</h2>
+            <ul>
+                <li><a href="#"><img src="img/Chatbot.png" alt="bot1" class="img"></a></li>
+                <li><a href="#"><img src="img/Magnifier.png" alt="bot2" class="img"></a></li>
+                <li><a href="#"><img src="img/hospital.png" alt="bo3" class="sel_img"></a></li>
+            </ul>
+        </div>
+        <div class="contents">
+            <div id="map"></div>
+        </div>
+    </div>
+
+<script>
+    function initMap() {
+        const map = new google.maps.Map(document.querySelector("#map"), {
+            center: {lat: 37.5, lng: 127.0},
+            scrollwheel: false,
+            zoom: 8,
+        });
+
+        async function fetchHospitals() {
+            try {
+                const response = await fetch('/get_hospitals');
+                const data = await response.json();
+                const hospitals = data["DS_WHLNAT_ROKAHSPT_ADDR"]["row"];
+
+                hospitals.forEach(hospital => {
+                    const latLng = {lat: parseFloat(hospital.ltd), lng: parseFloat(hospital.lngt)};
+                    const marker = new google.maps.Marker({
+                        position: latLng,
+                        map: map,
+                        title: hospital.hsptnm,
+                    });
+                });
+            } catch (error) {
+                console.error('Error fetching data from the API:', error);
+            }
+        }
+
+        fetchHospitals();
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQZemHa2q-qMUW3dWL1_w_NshKMSnys48&callback=initMap" async
+        defer></script>
+
+</body>
+</html>

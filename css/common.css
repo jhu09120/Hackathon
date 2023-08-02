@@ -40,6 +40,7 @@ strong{
 .bot3{
     display: flex;
 }
+
 .img1{
     margin-right: 10px;
     width: 45px;
@@ -49,6 +50,25 @@ strong{
     width: 45px;
 }
 .img3{
-    margin-right: 14px;
+    margin-right: 20px;
     width: 43px;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+
+.ovo1 > a {
+    color: black;
+
+}
+
+.ovo2 > a {
+    color: black;
+}
+
+.ovo3 > a {
+    color: black;
 }
